@@ -255,46 +255,50 @@ public class Juego extends InterfaceJuego {
 		this.generar_suero();
 	}
 
+	//choque con edificios  MAR
+	public boolean choqueTitanConEdificios (Titan titan) {
+		for (Edificio edificio: this.edificios) {
+			if (this.colision(titan.getRec(), edificio.getRec())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	//choque titanes con Mikasa MAR
+	public boolean choqueTitanConMikasa (Titan titan){
+			return this.colision(titan.getRec(), this.mikasa.getRec());
+}
+	
+	//Interseccion de titanes MAR
+	public boolean interseccionTitan(Titan titan, int indice) {
+		for (int i=0; i<indice; i++) {
+			if(this.colision(this.titanes[i].getRec(), titan.getRec())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
+	
 	public void generar_titanes(int cantidad) {
 		this.titanes = new Titan[cantidad];
 
 		for (int i = 0; i < this.titanes.length; i++) {
 			int ranX = (int) ThreadLocalRandom.current().nextInt(100, this.entorno.ancho() - 99);
 			int ranY = (int) ThreadLocalRandom.current().nextInt(100, this.entorno.alto() - 99);
-
+			
 			this.titanes[i] = new Titan(ranX, ranY, this.mikasa.getAngulo() + 180);
-		}
-
-		// Se comprueba que los titanes no choquen con mikasa al inicio.
-		for (int i = 0; i < this.titanes.length; i++) {
-			if (this.colision(this.titanes[i].getRec(), this.mikasa.getRec())) {
-				generar_titanes(cantidad);
-				return;
+			
+			while(this.choqueTitanConEdificios(this.titanes[i]) || this.choqueTitanConMikasa(this.titanes[i]) || this.interseccionTitan(this.titanes[i], i)) {
+				int x = (int) ThreadLocalRandom.current().nextInt(100, this.entorno.ancho() - 99);
+				int y = (int) ThreadLocalRandom.current().nextInt(100, this.entorno.alto() - 99);
+				
+				this.titanes[i] = new Titan(x, y, this.mikasa.getAngulo() + 180);	
 			}
 		}
-
-		// Se comprueba que los titanes no choquen con los edificios.
-		for (int i = 0; i < this.titanes.length; i++) {
-			for (Edificio edificio: this.edificios) {
-				if (this.colision(this.titanes[i].getRec(), edificio.getRec())) {
-					generar_titanes(cantidad);
-					return;
-				}
-			}
-		}
-
-		// Se comprueba que los titanes no se solapen.
-		// De lo contrario se vuelve a llamar a la función.
-		for (int i = 0; i < this.titanes.length; i++) {
-			for (int j = 0; j < this.titanes.length; j++) {
-				if (i != j) {
-					if (this.colision(this.titanes[i].getRec(), this.titanes[j].getRec())) {
-						generar_titanes(cantidad);
-						return;
-					}
-				}
-			}
-		}
+		return;
 	}
 
 	// Esta funcion genera un nuevo titán.
