@@ -16,9 +16,11 @@ public class Juego extends InterfaceJuego {
 	private Disparo[] disparos;
 	private Titan[] titanes;
 	private Suero suero;
+	public int titanesEliminados=0;
 	private int contador_habilidad = 0;
 	private int cooldown_disparo = 0;
 	private int contador_titan = 300;
+	private int cooldown_suero=1500;
 	
 	public Juego() {
 		// Inicializa el objeto entorno
@@ -30,10 +32,11 @@ public class Juego extends InterfaceJuego {
 		this.mikasa = new Mikasa(entorno.ancho() / 2, entorno.alto() / 2, 4);
 		this.generar_edificios();
 		this.generar_suero();
-		this.generar_titanes(4);
+	   	this.generar_titanes(4);
 
 		// Inicia el juego!
 		this.entorno.iniciar();
+		
 	}
 
 	/**
@@ -74,7 +77,7 @@ public class Juego extends InterfaceJuego {
 
 				// Verificar si hay una colisión con el suero.
 				if (this.colision(this.mikasa.getRec(), this.suero.getRec())) {
-					// Si Mikasa colisiona con el suero este se elimina y se cambia el varlor de contador_habilidad.
+					// Si Mikasa colisiona con el suero este se elimina y se cambia el valor de contador_habilidad.
 					this.suero = null;
 					this.contador_habilidad = 900;
 				}
@@ -128,12 +131,34 @@ public class Juego extends InterfaceJuego {
 				this.titanes[i].dibujar(this.entorno);
 			}
 
-			if (this.contador_titan <= 0) {
-				this.generar_titan();
-				this.contador_titan = 300;
-			} else {
-				this.contador_titan--;
+			if (this.titanes.length < 5) {
+				if (this.contador_titan <= 0) {
+					this.generar_titan();
+					this.contador_titan = 300;
+				} else {
+					this.contador_titan--;
+				}
 			}
+			
+			if (this.mikasa.getEstado().equals("especial")) {
+				for (int i = 0; i < this.titanes.length; i++) {
+					if (this.colision(this.mikasa.getRec(), this.titanes[i].getRec())) {
+						this.eliminar_titan(i);
+						titanesEliminados+=1;
+						System.out.println(titanesEliminados);
+					}
+				}
+			}
+
+			if (this.suero == null) {
+				this.cooldown_suero--;
+				if (this.cooldown_suero <= 0) {
+					this.generar_suero();
+					this.cooldown_suero = 1500;
+					return;
+				}
+			}
+			
 		} else if (this.estado.equals("final")) {
 			entorno.cambiarFont("Arial", 32, Color.white);
 			entorno.escribirTexto("Has Perdido", 50, 60);
@@ -157,10 +182,14 @@ public class Juego extends InterfaceJuego {
 
 	public void dibujar_fondo() {
 		this.entorno.dibujarImagen(this.imgFondo, 400, 300, 0, 1);
+		entorno.cambiarFont("Arial", 20, Color.black);
+		this.entorno.escribirTexto("ENEMIGOS ELIMINADOS: ", 8, 580);
+		this.entorno.escribirTexto(Integer.toString(titanesEliminados), 250, 580);
 	}
 
 	public void dibujar_inicio() {
 		this.entorno.dibujarImagen(this.imgInicio, 400, 300, 0, 1);
+		
 	}
 
 	// Funcion que comprueba si hay una colisión entre dos rectangulos.
@@ -278,6 +307,7 @@ public class Juego extends InterfaceJuego {
 		}
 		return false;
 	}
+	
 	
 	
 	
@@ -409,6 +439,7 @@ public class Juego extends InterfaceJuego {
 				if (this.colision(this.disparos[i].getRec(), this.titanes[h].getRec())) {
 					this.eliminar_disparo(i);
 					this.eliminar_titan(h);
+					this.titanesEliminados+=1;
 					return;
 				}
 			}
@@ -481,6 +512,7 @@ public class Juego extends InterfaceJuego {
 			this.mikasa.setY(this.entorno.alto() - this.mikasa.getAlto() / 2);
 		}
 	}
+	
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

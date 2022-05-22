@@ -1,21 +1,20 @@
 package juego;
 
 import entorno.Entorno;
-// import entorno.Herramientas;
-
+import entorno.Herramientas;
 import java.awt.*;
 
 public class Mikasa {
     private Rectangle rec;
 
-    // private Image img_arriba = Herramientas.cargarImagen("mikasa-arriba.png");
-    // private Image img_abajo = Herramientas.cargarImagen("mikasa-abajo.png");
-    // private Image img_izquierda = Herramientas.cargarImagen("mikasa-izquierda.png");
+     private Image img_arriba = Herramientas.cargarImagen("mikasa-arriba.png");
+     private Image img_abajo = Herramientas.cargarImagen("mikasa-abajo.png");
+     private Image img_izquierda = Herramientas.cargarImagen("mikasa-izquierda.png");
     
-    // private Image img_derecha = Herramientas.cargarImagen("mikasa-derecha.png");
-    // private Image img_especial = Herramientas.cargarImagen("mikasa-titan.png");
+     private Image img_derecha = Herramientas.cargarImagen("mikasa-derecha.png");
+     private Image img_especial = Herramientas.cargarImagen("mikasa-titan.png");
 
-    // private Image img = this.img_derecha;
+     private Image img = this.img_derecha;
 
     private int velocidad;
     private String estado = "normal";
@@ -33,32 +32,34 @@ public class Mikasa {
         if (this.estado.equals("normal")) {
             // Cambiar la imagen de mikasa dependiendo de su angulo.
 
-            // if (grados >= 0 && grados < 90) {
-            //     this.img = this.img_derecha;
-            // } else if (grados >= 90 && grados < 180) {
-            //     this.img = this.img_abajo;
-            // } else if (grados >= 180 && grados < 270) {
-            //     this.img = this.img_izquierda;
-            // } else if (grados >= 270 && grados < 360) {
-            //     this.img = this.img_arriba;
-            // }
+             if (angulo >= 0 && angulo < 90) {
+                 this.img = this.img_derecha;
+            } else if (angulo >= 90 && angulo < 180) {
+                 this.img = this.img_abajo;
+            } else if (angulo >= 180 && angulo < 270) {
+                 this.img = this.img_izquierda;
+             } else if (angulo >= 270 && angulo < 360) {
+                 this.img = this.img_arriba;
+             }
 
-            //entorno.dibujarImagen(this.img, this.rec.x, this.rec.y, this.angulo, 2.5);
-            entorno.dibujarTriangulo(this.rec.x, this.rec.y, this.rec.height, this.rec.width / 2, this.angulo, Color.PINK);
+            entorno.dibujarImagen(this.img, this.rec.x, this.rec.y, this.angulo, 2.5);
+            //entorno.dibujarTriangulo(this.rec.x, this.rec.y, this.rec.height, this.rec.width / 2, this.grados, Color.PINK);
         } else if (this.estado.equals("especial")) {
-            //entorno.dibujarImagen(this.img_especial, this.rec.x, this.rec.y, this.angulo, 0.4);
-            entorno.dibujarTriangulo(this.rec.x, this.rec.y, this.rec.height, this.rec.width / 2, this.angulo, Color.ORANGE);
+            entorno.dibujarImagen(this.img_especial, this.rec.x, this.rec.y, this.angulo, 0.4);
+            //entorno.dibujarTriangulo(this.rec.x, this.rec.y, this.rec.height, this.rec.width / 2, this.grados, Color.ORANGE);
         }
     }
 
     // Funciones que mueven a Mikasa hacia adelante o hacia atrás.
     public void mover_adelante() {
+    	//this.img_derecha = Herramientas.cargarImagen("mikasa-derecha.png");
+        //this.img_izquierda = Herramientas.cargarImagen("mikasa-izquierda.png");
         this.setX(this.getX() + (int) (Math.cos(this.angulo) * this.velocidad));
         this.setY(this.getY() + (int) (Math.sin(this.angulo) * this.velocidad));
     }
 
     public void mover_atras() {
-        this.setX(this.getX() - (int) (Math.cos(this.angulo) * this.velocidad));
+       this.setX(this.getX() - (int) (Math.cos(this.angulo) * this.velocidad));
         this.setY(this.getY() - (int) (Math.sin(this.angulo) * this.velocidad));
     }
 
