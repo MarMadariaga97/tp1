@@ -5,6 +5,8 @@ import entorno.Herramientas;
 import java.awt.*;
 
 public class Mikasa {
+	 
+	
     private Rectangle rec;
 
     private Image mikasa_quieta = Herramientas.cargarImagen("mikasa_quieta.png");
@@ -31,7 +33,8 @@ public class Mikasa {
 
     // Comprueba el estado de mikasa y dependiendo de cuál sea le cambia el color.
     public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo(this.rec.x, this.rec.y, this.rec.width, this.rec.height, 0, Color.WHITE);
+    	Color color = new Color(0, 255, 0, 0);
+        entorno.dibujarRectangulo(this.rec.x, this.rec.y, this.rec.width, this.rec.height, 0, color);
 
         if (this.estado.equals("normal")) {
             entorno.dibujarImagen(this.imagen_actual, this.rec.x, this.rec.y, this.angulo - Math.PI / 2, 3);

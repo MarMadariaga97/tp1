@@ -15,7 +15,8 @@ public class Suero {
     }
 
     public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo(this.getX(), this.getY(), this.getAncho(), this.getAlto(), 0, Color.GREEN);
+    	Color color = new Color(128, 0, 255, 0);
+        entorno.dibujarRectangulo(this.getX(), this.getY(), this.getAncho(), this.getAlto(), 0, color);
         entorno.dibujarImagen(this.getImg(), this.getX(), this.getY(), 0, 0.1);
     }
 

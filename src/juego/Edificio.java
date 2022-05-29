@@ -13,7 +13,8 @@ public class Edificio {
     }
 
     public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo(this.getX(), this.getY(), this.getAncho(), this.getAlto(), 0, Color.YELLOW);
+    	Color color = new Color(128, 64, 0, 0);
+        entorno.dibujarRectangulo(this.getX(), this.getY(), this.getAncho(), this.getAlto(), 0, color);
         entorno.dibujarImagen(this.getImg(), this.getX(), this.getY(), 0, 0.2);
     }
 

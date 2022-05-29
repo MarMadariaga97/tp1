@@ -21,7 +21,8 @@ public class Titan {
     }
 
     public void dibujar(Entorno entorno) {
-        entorno.dibujarRectangulo(this.rec.x, this.rec.y, this.rec.width, this.rec.height, 0, Color.RED);
+    	Color color = new Color (255, 0, 0, 0);
+        entorno.dibujarRectangulo(this.rec.x, this.rec.y, this.rec.width, this.rec.height, 0, color);
         entorno.dibujarTriangulo(this.rec.x, this.rec.y, this.rec.height, this.rec.width / 2, this.angulo, Color.PINK);
 
         if (this.frames <= 20) {
